@@ -1,0 +1,77 @@
+{
+	"name": "Breadth",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Length",
+					"value": "10"
+				}
+			},
+			{
+				"name": "Set variable2",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Breadth",
+					"value": "30"
+				}
+			},
+			{
+				"name": "Set variable3",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set variable2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Area",
+					"value": {
+						"value": "@{mul(int(variables(\n'length'\n)),int(variables(\n'breadth'\n)))}",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"Length": {
+				"type": "String"
+			},
+			"Breadth": {
+				"type": "String"
+			},
+			"Area": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
