@@ -1,5 +1,5 @@
 {
-	"name": "Retaildb",
+	"name": "Retaildb_SQL",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LS_AzureSQLDatabase_retail_db",
