@@ -45,6 +45,7 @@
 						"value": "@activity('Lookup1').output",
 						"type": "Expression"
 					},
+					"isSequential": false,
 					"activities": [
 						{
 							"name": "Append variable1",
