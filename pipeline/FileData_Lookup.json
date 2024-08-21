@@ -1,5 +1,5 @@
 {
-	"name": "pipeline2",
+	"name": "FileData_Lookup",
 	"properties": {
 		"activities": [
 			{
@@ -16,10 +16,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "Retaildbcsv",
+						"referenceName": "AllUserFiles",
 						"type": "DatasetReference"
 					},
-					"fieldList": [],
+					"fieldList": [
+						"childItems"
+					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
 						"enablePartitionDiscovery": false
@@ -28,8 +30,133 @@
 						"type": "DelimitedTextReadSettings"
 					}
 				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata1').output.childItems",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "If Condition1",
+							"type": "IfCondition",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@contains(item().name,'.csv')",
+									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "Append variable Other",
+										"type": "AppendVariable",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "OtherFiles",
+											"value": {
+												"value": "@item().name",
+												"type": "Expression"
+											}
+										}
+									}
+								],
+								"ifTrueActivities": [
+									{
+										"name": "Append variable CSV",
+										"type": "AppendVariable",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "CSVFiles",
+											"value": {
+												"value": "@item().name",
+												"type": "Expression"
+											}
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Set variable CSV",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "AllCSVFiles",
+					"value": {
+						"value": "@variables('CSVFiles')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable Other",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "AllOtherFiles",
+					"value": {
+						"value": "@variables('OtherFiles')",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"variables": {
+			"CSVFiles": {
+				"type": "Array"
+			},
+			"OtherFiles": {
+				"type": "Array"
+			},
+			"AllCSVFiles": {
+				"type": "Array"
+			},
+			"AllOtherFiles": {
+				"type": "Array"
+			}
+		},
 		"annotations": []
 	}
 }
