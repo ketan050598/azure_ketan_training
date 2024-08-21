@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "Select name,email from [dbo].[users]",
+						"sqlReaderQuery": "Select top 5 name,email from [dbo].[users]",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -54,7 +54,7 @@
 							"typeProperties": {
 								"variableName": "name",
 								"value": {
-									"value": "concat(@item().name,@item().email)",
+									"value": "@concat(item().name,'-', item().email)",
 									"type": "Expression"
 								}
 							}
@@ -77,14 +77,18 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Concat name and email",
+					"value": {
+						"value": "@variables('name')",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"variables": {
 			"name": {
-				"type": "Array"
-			},
-			"email": {
 				"type": "Array"
 			},
 			"Concat name and email": {
