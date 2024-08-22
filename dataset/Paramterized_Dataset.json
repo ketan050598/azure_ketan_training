@@ -1,0 +1,31 @@
+{
+	"name": "Paramterized_Dataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureDataLakeStorage1_ketan050598",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"FileNameDS": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().FileNameDS",
+					"type": "Expression"
+				},
+				"fileSystem": "retaildb"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
