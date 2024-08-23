@@ -5,7 +5,14 @@
 			{
 				"name": "Stored procedure1",
 				"type": "SqlServerStoredProcedure",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -86,10 +93,37 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "All Inactive User",
+					"value": {
+						"value": "@variables('Id of Inactive')",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"variables": {
 			"Id of Inactive": {
+				"type": "Array"
+			},
+			"All Inactive User": {
 				"type": "Array"
 			}
 		},
