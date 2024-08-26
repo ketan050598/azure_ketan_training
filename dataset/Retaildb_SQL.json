@@ -5,6 +5,11 @@
 			"referenceName": "LS_AzureSQLDatabase_retail_db",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"Folderpath": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [
